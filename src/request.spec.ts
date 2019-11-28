@@ -334,6 +334,19 @@ describe('Request', () => {
       expect(path).toEqual('/api/example/1.json')
     })
 
+    describe('when the same dynamic segment is defined in multiple places', () => {
+      it('replaces the segment in all places', () => {
+        const methodDescriptor = new MethodDescriptor({
+          ...methodDescriptorArgs,
+          params: { resource: 'users' },
+          path: '/api/{resource}/{resource}.json',
+        })
+
+        const path = new Request(methodDescriptor).path()
+        expect(path).toEqual('/api/users/users.json')
+      })
+    })
+
     describe('when dynamic segment is not provided', () => {
       it('removes optional dynamic segments', () => {
         const methodDescriptor = new MethodDescriptor({
